@@ -63,11 +63,32 @@
     <input type="password" id="password" name="password" required />
   </div>
   <button type="submit" class="login-button">Log In</button>
+  <br></br>
+  <button id="createAccountBtn" type="button" class="login-button">Create account</button>
 </form>
 
-<script>
+<script> //script for creating account
+document.getElementById('createAccountBtn').addEventListener('click', function(e){
+  e.preventDefault();
+
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  fetch('http://localhost:8080/api/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  })
+   .then(response => response.text())
+  .then(data => alert(data))
+  .catch(err => alert('Error: ' + err));
+  
+});
+</script>
+
+<script> //script for login
 document.getElementById('loginForm').addEventListener('submit', function(e) {
-  e.preventDefault(); // prevent normal form submit
+  e.preventDefault(); 
 
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
