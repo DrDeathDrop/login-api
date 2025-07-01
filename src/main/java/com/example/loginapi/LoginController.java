@@ -1,11 +1,9 @@
 package com.example.loginapi;
 
-import com.example.loginapi.LoginRequest;
-import com.example.loginapi.User;
-import com.example.loginapi.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 import java.util.Optional;
 
@@ -15,7 +13,10 @@ import java.util.Optional;
 public class LoginController {
 
     @Autowired
+    private ReservationRepository reservationRepository;
+    @Autowired
     private UserRepository userRepository;
+
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest loginRequest) {
@@ -45,6 +46,23 @@ public class LoginController {
         userRepository.save(user);
         return "User registered successfully";
     }
+
+    @PostMapping("/reserve")
+    public String reserve(@RequestBody Reservation reservation) {
+        if (reservation.getUsername() == null || reservation.getUsername().isEmpty()) {
+            return "Username is required for reservation";
+        }
+
+        Optional<User> userOpt = userRepository.findByUsername(reservation.getUsername());
+        if (userOpt.isEmpty()) {
+            return "User not found";
+        }
+
+        reservationRepository.save(reservation);
+        return "Reservation created successfully";
+    }
+
 }
+
 
 

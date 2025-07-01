@@ -65,7 +65,27 @@
   <button type="submit" class="login-button">Log In</button>
   <br></br>
   <button id="createAccountBtn" type="button" class="login-button">Create account</button>
+  <br></br>
+  <button id = "reserveTableBtn" type="button" class="login-button">Reserve table</button>
 </form>
+
+<script> //script for reserving a table
+  document.getElementById('reserveTableBtn').addEventListener('click', function(e){
+    e.preventDefault();
+
+    const username = document.getElementById('username').value;
+
+    fetch('http://localhost:8080/api/reserve',{
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username})
+    })
+  .then(response => response.text())
+  .then(data => alert(data))
+  .catch(err => alert('Error '+ err ));
+  });
+
+</script>
 
 <script> //script for creating account
 document.getElementById('createAccountBtn').addEventListener('click', function(e){
